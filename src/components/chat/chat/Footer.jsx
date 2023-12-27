@@ -2,8 +2,10 @@ import { useEffect } from 'react';
 
 import { EmojiEmotions, AttachFile, Mic } from '@mui/icons-material';
 import { Box, styled, InputBase } from '@mui/material';
-
+import { IoIosSend } from "react-icons/io";
 import { uploadFile } from '../../../service/api';
+ 
+ 
 
 const Container = styled(Box)`
     height: 55px;
@@ -39,7 +41,7 @@ const ClipIcon = styled(AttachFile)`
 `;
 
 
-const Footer = ({ sendText, value, setValue, setFile, file, setImage }) => {
+const Footer = ({ sendText, value, setValue, setFile, file,image,newMessages,setImage,socket, account, receiverId,conversation, setNewMessageFlag}) => {
 
     
     useEffect(() => {
@@ -60,6 +62,45 @@ const Footer = ({ sendText, value, setValue, setFile, file, setImage }) => {
         setValue(e.target.files[0].name);
         setFile(e.target.files[0]);
     }
+
+
+    const onSendClick = async () => {
+        // Check if either text or file is present
+        if (value || file) {
+            let message = {};
+    
+            if (!file) {
+                // If no file, send a text message
+                message = {
+                    senderId: account.sub,
+                    receiverId: receiverId,
+                    conversationId: conversation._id,
+                    type: 'text',
+                    text: value
+                };
+            } else {
+                // If there's a file, send a file message
+                message = {
+                    senderId: account.sub,
+                    conversationId: conversation._id,
+                    receiverId: receiverId,
+                    type: 'file',
+                    text: image
+                };
+            }
+
+
+            socket.current.emit('sendMessage', message);
+
+            await newMessages(message);
+            // Reset values
+            setValue('');
+            setFile();
+            setImage('');
+            setNewMessageFlag(prev => !prev);
+        }
+    };
+    
 
     return (
         <Container>
@@ -84,6 +125,10 @@ const Footer = ({ sendText, value, setValue, setFile, file, setImage }) => {
                 />
             </Search>
             <Mic />
+            <IoIosSend 
+                className='w-8 h-8 cursor-pointer'
+                onClick={onSendClick}
+            />
         </Container>
     )
 }

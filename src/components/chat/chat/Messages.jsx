@@ -127,7 +127,15 @@ const Messages = ({ person, conversation }) => {
                 setValue={setValue} 
                 setFile={setFile} 
                 file={file} 
+                image={image}
                 setImage={setImage}
+                account={account}
+                receiverId={receiverId}
+                conversation={conversation}
+                setNewMessageFlag={setNewMessageFlag}
+                socket={socket}
+          newMessages={newMessages}
+          
             />
         </Wrapper>
     )
