@@ -1,6 +1,7 @@
 {
   "name": "client",
   "version": "1.0.0",
+  "proxy" : "http://localhost:3000",
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
   "scripts": {
