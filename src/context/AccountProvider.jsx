@@ -16,7 +16,7 @@ const AccountProvider = ({children}) => {
     const socket = useRef();
 
     useEffect(() => {
-        socket.current = io('https://whatsappclone-socket-backend4.onrender.com');
+        socket.current = io('https://whatsappclone-socket-backend5.onrender.com');
     }, [])
 
     return (
